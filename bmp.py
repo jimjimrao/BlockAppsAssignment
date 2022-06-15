@@ -2,7 +2,6 @@
 import numpy as np
 import skimage.io
 import struct
-import matplotlib.pyplot as plt
 
 # BMP class
 class BMP:
@@ -37,7 +36,6 @@ class BMP:
 
     def __repr__(self) -> str:
         res = 'file: ' +  str(self.__path) + '\n'
-        # res += str(self.__correct_type) + '\n'
         res += 'offset: ' + str(self.__offset) + '\n'
         res += 'width: ' + str(self.__width) + '\n'
         res += 'height: ' + str(self.__height) + '\n'
@@ -99,10 +97,12 @@ class BMP:
             r_string = image_file.read(1)
             g_string = image_file.read(1)
             b_string = image_file.read(1)
-
+            
+        
+        
             if len(r_string) == 0:
                 # This is expected to happen when we've read everything.
-                if len(rows) != width:
+                if len(rows) != height:
                     print("Warning!!! Read to the end of the file at the correct sub-pixel (red) but we've not read" + str(height) + " rows!")
                 break
 
@@ -111,6 +111,7 @@ class BMP:
                 break
 
             if len(b_string) == 0:
+                
                 print("Warning!!! Got 0 length string for blue. Breaking.")
                 break
 
@@ -138,7 +139,7 @@ class BMP:
         diff = len(sub_pixels) - height * width * 3
         print("Packed", len(sub_pixels), "sub-pixels.")
         if diff != 0:
-            print("Error! Number of sub-pixels packed does not match 1920*1080: (" + str(len(sub_pixels)) + " - " + str(width) + " * " + str(height) + " * 3 = " + str(diff) +").")
+            print("Error! Number of sub-pixels packed does not match " + str(width) + "*" + str(height) + "*3 = "  + str(width * height * 3) + " : (" + str(len(sub_pixels)) + " - " + str(width) + " * " + str(height) + " * 3 = " + str(diff) +").")
 
         self.pixels = np.array(sub_pixels, dtype=np.uint8)
         
@@ -156,7 +157,7 @@ class BMP:
 #####################################################################
 ### unit test code:
 if __name__ == "__main__":
-    path = 'sample.bmp'
+    path = 'sample2.bmp'
     image = BMP(path)
     print(image)
     # print(image.check_bmp())
@@ -167,6 +168,7 @@ if __name__ == "__main__":
     print(image.get_correct_type())
     image.read_rows()
     image.repack_sub_pixels()
+    print(image.rows[-1])
     image.negate_pixels()
     
     image.export_image()
