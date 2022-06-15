@@ -140,13 +140,23 @@ class BMP:
         if diff != 0:
             print("Error! Number of sub-pixels packed does not match 1920*1080: (" + str(len(sub_pixels)) + " - " + str(width) + " * " + str(height) + " * 3 = " + str(diff) +").")
 
-        return sub_pixels
+        self.pixels = np.array(sub_pixels, dtype=np.uint8)
         
+    def negate_pixels(self):
+        """ converts pixels to its negative """
+        image = np.reshape(self.pixels, (self.get_height(), self.get_width(),3))
+        neg = 255 - image
+        self.neg_pixels = neg
+    
+    def export_image(self):
+        """ exports the image to .bmp"""
+        skimage.io.imsave(fname="result.bmp", arr=self.neg_pixels)
+
 
 #####################################################################
 ### unit test code:
 if __name__ == "__main__":
-    path = 'clue.bmp'
+    path = 'sample.bmp'
     image = BMP(path)
     print(image)
     # print(image.check_bmp())
@@ -155,6 +165,8 @@ if __name__ == "__main__":
     print(image.get_bits_per_pixel())
     print(image.get_compression())
     print(image.get_correct_type())
-    rows = image.read_rows()
-    pixels = image.repack_sub_pixels()
+    image.read_rows()
+    image.repack_sub_pixels()
+    image.negate_pixels()
     
+    image.export_image()
