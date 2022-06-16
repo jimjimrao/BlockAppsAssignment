@@ -13,11 +13,13 @@ class BMP:
         self.__path = path
         bmp = open(path, "rb")
 
-        tof = bmp.read(2)
-        if tof != b'BM':
+        self.tof = bmp.read(2)
+        if self.tof != b'BM':
             self.__correct_type = False
         else:
             self.__correct_type = True
+        
+        
 
         # Getting the offset postion 10 -> 4 reads
         bmp.seek(10, 0)
@@ -38,7 +40,9 @@ class BMP:
 
 
     def __repr__(self) -> str:
-        res = 'file: ' +  str(self.__path) + '\n'
+        res = "File info:" + '\n'
+        res += 'file: ' +  str(self.__path) + '\n'
+        res += 'type:' + str(self.tof) + '\n'
         res += 'offset: ' + str(self.__offset) + '\n'
         res += 'width: ' + str(self.__width) + '\n'
         res += 'height: ' + str(self.__height) + '\n'
@@ -111,7 +115,7 @@ class BMP:
 
             if len(g_string) == 0:
                 print("Warning!!! Got 0 length string for green. Breaking.")
-                raise ValueError
+                # raise ValueError
                 break
 
             if len(b_string) == 0:
@@ -185,15 +189,15 @@ if __name__ == "__main__":
     print(image.get_bits_per_pixel())
     print(image.get_compression())
     print(image.get_correct_type())
-    try:
-        image.read_rows()
-        image.repack_sub_pixels()
-        image.negate_pixels()
+    # try:
+    #     image.read_rows()
+    #     image.repack_sub_pixels()
+    #     image.negate_pixels()
 
-    except:
-        print('Using fail_safe method instead')
-        image.fail_safe_negate_and_read()
+    # except:
+    #     print('Using fail_safe method instead')
+    #     image.fail_safe_negate_and_read()
        
     
     
-    image.export_image()
+    # image.export_image()
