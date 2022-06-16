@@ -9,7 +9,7 @@ The user can pass in the path of a file with the following restrictions:
 
 If the file does not meet these requirements, the program will display the appropriate error message and ask the user to input the path of a valid file. 
 
-The BMP image will parse the raw metadata and build the photo negative from the file's Pixel array and export the negative in BMP format in the same directory as the program. 
+The program will parse the raw metadata and build the photo negative from the file's Pixel array and export the negative in BMP format in the same directory as the program. 
 
 Some examples of invalid and working BMP image files are provided in the [Images Folder](https://github.com/jimjimrao/BlockAppsAssignment/tree/main/Images)
 ## Installation
