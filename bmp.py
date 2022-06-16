@@ -2,6 +2,9 @@
 import numpy as np
 import skimage.io
 import struct
+import os.path
+
+import matplotlib.image as mpimg
 
 # BMP class
 class BMP:
@@ -108,11 +111,13 @@ class BMP:
 
             if len(g_string) == 0:
                 print("Warning!!! Got 0 length string for green. Breaking.")
+                raise ValueError
                 break
 
             if len(b_string) == 0:
                 
                 print("Warning!!! Got 0 length string for blue. Breaking.")
+                raise ValueError
                 break
 
             r = ord(r_string)
@@ -127,6 +132,7 @@ class BMP:
 
         self.rows = rows
     
+
     def repack_sub_pixels(self):
         print("Repacking pixels...")
         width = self.get_width()
@@ -140,7 +146,7 @@ class BMP:
         print("Packed", len(sub_pixels), "sub-pixels.")
         if diff != 0:
             print("Error! Number of sub-pixels packed does not match " + str(width) + "*" + str(height) + "*3 = "  + str(width * height * 3) + " : (" + str(len(sub_pixels)) + " - " + str(width) + " * " + str(height) + " * 3 = " + str(diff) +").")
-
+            
         self.pixels = np.array(sub_pixels, dtype=np.uint8)
         
     def negate_pixels(self):
@@ -148,10 +154,23 @@ class BMP:
         image = np.reshape(self.pixels, (self.get_height(), self.get_width(),3))
         neg = 255 - image
         self.neg_pixels = neg
+
+    def fail_safe_negate_and_read(self):
+        """ failsafe if above doesn't work"""
+        image = mpimg.imread(self.get_path())
+        neg = 255 - image
+        self.neg_pixels = neg
+
+    def parse_filename(self):
+        """ parses for the file name """
+        path = os.path.splitext(self.get_path())[0]
+        self.file_name = os.path.basename(path)
     
     def export_image(self):
-        """ exports the image to .bmp"""
-        skimage.io.imsave(fname="result.bmp", arr=self.neg_pixels)
+        """ exports the image to .bmp with a new name"""
+        self.parse_filename()
+        new_file_name = str(self.file_name + "_negative.bmp")
+        skimage.io.imsave(fname = new_file_name, arr = self.neg_pixels)
 
 
 #####################################################################
@@ -166,9 +185,15 @@ if __name__ == "__main__":
     print(image.get_bits_per_pixel())
     print(image.get_compression())
     print(image.get_correct_type())
-    image.read_rows()
-    image.repack_sub_pixels()
-    print(image.rows[-1])
-    image.negate_pixels()
+    try:
+        image.read_rows()
+        image.repack_sub_pixels()
+        image.negate_pixels()
+
+    except:
+        print('Using fail_safe method instead')
+        image.fail_safe_negate_and_read()
+       
+    
     
     image.export_image()
