@@ -20,6 +20,26 @@ pip install -r requirements.txt
 
 ## Usage
 
-```python
+```bash
 python3 main.py
+```
+```bash
+Enter .bmp image file path or type '--help' for instructions: sample.bmp
+File found 
+
+File info:
+file: sample.bmp
+type:b'BM'
+offset: 138
+width: 640
+height: 426
+bits per pixel: 24
+compression type: 0
+ 
+
+Repacking pixels...
+Packed 817920 sub-pixels.
+Creating negative...
+
+Negative exported as: sample_negative.bmp in the same directory as this program
 ```
