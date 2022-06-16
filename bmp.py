@@ -3,7 +3,6 @@ import numpy as np
 import skimage.io
 import struct
 import os.path
-
 import matplotlib.image as mpimg
 
 # BMP class
@@ -80,6 +79,7 @@ class BMP:
         return self.__correct_type
 
     def read_rows(self):
+        """ reads each row of the pixel array and builds and array of the image's pixels"""
         image_file = open(self.get_path(), "rb")
         # skip the BMP header.
         image_file.seek(self.get_offset())
@@ -138,6 +138,7 @@ class BMP:
     
 
     def repack_sub_pixels(self):
+        """ packs all the sub_pixels into one numpy array"""
         print("Repacking pixels...")
         width = self.get_width()
         height = self.get_height()
@@ -180,24 +181,27 @@ class BMP:
 #####################################################################
 ### unit test code:
 if __name__ == "__main__":
-    path = 'sample2.bmp'
+    path = 'Sample Images/bmp_24.bmp'
     image = BMP(path)
     print(image)
     # print(image.check_bmp())
-    print(image.get_offset())
-    print(image.get_width(), image.get_height())
-    print(image.get_bits_per_pixel())
-    print(image.get_compression())
-    print(image.get_correct_type())
-    # try:
-    #     image.read_rows()
-    #     image.repack_sub_pixels()
-    #     image.negate_pixels()
+    # print(image.get_offset())
+    # print(image.get_width(), image.get_height())
+    # print(image.get_bits_per_pixel())
+    # print(image.get_compression())
+    # print(image.get_correct_type())
+    try:
+        image.read_rows()
+        image.repack_sub_pixels()
+        image.negate_pixels()
 
-    # except:
-    #     print('Using fail_safe method instead')
-    #     image.fail_safe_negate_and_read()
+    except:
+        print('Using fail_safe method instead')
+        image.fail_safe_negate_and_read()
        
+    print(image.rows)
+    print()
+    print(image.pixels)
     
     
     # image.export_image()

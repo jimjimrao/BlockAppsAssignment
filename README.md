@@ -23,7 +23,7 @@ pip install -r requirements.txt
 ```bash
 python3 main.py
 ```
-```bash
+```console
 Enter .bmp image file path or type '--help' for instructions: sample.bmp
 File found 
 
@@ -43,3 +43,10 @@ Creating negative...
 
 Negative exported as: sample_negative.bmp in the same directory as this program
 ```
+
+Original File: sample.bmp
+![Alt text](https://raw.githubusercontent.com/jimjimrao/BlockAppsAssignment/main/sample.bmp?token=GHSAT0AAAAAABT4NFNG7XY2XQ5DZEOPTGHYYVLNJMA "a title")
+
+Exported photo negative: sample_negative.bmp
+![Alt text](https://raw.githubusercontent.com/jimjimrao/BlockAppsAssignment/main/sample_negative.bmp?token=GHSAT0AAAAAABT4NFNG543GEJOVQ4LT2VHYYVLNIGQ "a title")
+
